@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mimoza — Mëso Gjermanisht</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🌸 Mimoza</h1>
+        <p class="subtitle">Mëso Gjermanisht — Hap pas Hapi</p>
+    </header>
+
+    <main>
+        <section id="welcome" class="card">
+            <h2>Mirë se vini, Leti!</h2>
+            <p>Zgjidhni një ushtrim më poshtë për të filluar.</p>
+        </section>
+
+        <nav id="exercise-menu" class="card">
+            <h2>Ushtrimet</h2>
+            <div class="menu-grid">
+                <button class="menu-btn" onclick="loadExercise('vocabulary')">
+                    <span class="icon">📚</span>
+                    <span>Fjalor</span>
+                    <small>Mëso fjalë të reja</small>
+                </button>
+                <button class="menu-btn" onclick="loadExercise('multiplechoice')">
+                    <span class="icon">✅</span>
+                    <span>Zgjedh Përgjigjen</span>
+                    <small>Multiple choice</small>
+                </button>
+                <button class="menu-btn" onclick="loadExercise('fillin')">
+                    <span class="icon">✏️</span>
+                    <span>Plotëso Fjalën</span>
+                    <small>Fill in the blank</small>
+                </button>
+                <button class="menu-btn" onclick="loadExercise('translation')">
+                    <span class="icon">🔄</span>
+                    <span>Përkthe</span>
+                    <small>Shqip → Gjermanisht</small>
+                </button>
+            </div>
+        </nav>
+
+        <section id="exercise-area" class="card hidden">
+            <div id="exercise-header">
+                <button class="back-btn" onclick="goBack()">← Kthehu</button>
+                <h2 id="exercise-title"></h2>
+                <span id="score-display"></span>
+            </div>
+            <div id="exercise-content"></div>
+            <div id="exercise-feedback" class="hidden"></div>
+            <div id="exercise-controls">
+                <button id="check-btn" class="primary-btn hidden" onclick="checkAnswer()">Kontrollo</button>
+                <button id="next-btn" class="primary-btn hidden" onclick="nextQuestion()">Vazhdo →</button>
+            </div>
+        </section>
+
+        <section id="results" class="card hidden">
+            <h2>Rezultati</h2>
+            <div id="results-content"></div>
+            <button class="primary-btn" onclick="goBack()">Kthehu te Ushtrimet</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>Mimoza — Asistentja jote për gjermanishten 🌸</p>
+    </footer>
+
+    <script src="exercises.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

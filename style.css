@@ -1,0 +1,358 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fdf6f0;
+    color: #2d2d2d;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: linear-gradient(135deg, #e8a0bf, #d4739d);
+    color: white;
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+main {
+    flex: 1;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+    color: #d4739d;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Menu */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.menu-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.25rem 0.75rem;
+    border: 2px solid #f0e0ea;
+    border-radius: 12px;
+    background: #fdf6f0;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.menu-btn:hover, .menu-btn:active {
+    border-color: #d4739d;
+    background: #fce8f1;
+    transform: translateY(-2px);
+}
+
+.menu-btn .icon {
+    font-size: 2rem;
+}
+
+.menu-btn span {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2d2d2d;
+}
+
+.menu-btn small {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+/* Exercise area */
+#exercise-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+#exercise-title {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+#score-display {
+    font-weight: 600;
+    color: #d4739d;
+    font-size: 0.95rem;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #d4739d;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    padding: 0.25rem 0;
+}
+
+/* Vocabulary cards */
+.vocab-card {
+    background: #fdf6f0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid #d4739d;
+}
+
+.vocab-card .german {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d2d2d;
+}
+
+.vocab-card .pronunciation {
+    font-size: 0.95rem;
+    color: #888;
+    font-style: italic;
+    margin: 0.25rem 0;
+}
+
+.vocab-card .albanian {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.vocab-card .example {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e8e0e4;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Multiple choice */
+.mc-question {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.mc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mc-option {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 2px solid #e8e0e4;
+    border-radius: 10px;
+    background: #fdf6f0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.mc-option:hover {
+    border-color: #d4739d;
+}
+
+.mc-option.selected {
+    border-color: #d4739d;
+    background: #fce8f1;
+}
+
+.mc-option.correct {
+    border-color: #4caf50;
+    background: #e8f5e9;
+}
+
+.mc-option.wrong {
+    border-color: #f44336;
+    background: #ffebee;
+}
+
+/* Fill in the blank */
+.fillin-sentence {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.fillin-input {
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid #d4739d;
+    background: transparent;
+    font-size: 1.1rem;
+    font-family: inherit;
+    padding: 0.15rem 0.5rem;
+    width: 150px;
+    outline: none;
+    text-align: center;
+}
+
+.fillin-input:focus {
+    border-bottom-color: #e8a0bf;
+}
+
+.fillin-input.correct {
+    border-bottom-color: #4caf50;
+    color: #4caf50;
+}
+
+.fillin-input.wrong {
+    border-bottom-color: #f44336;
+    color: #f44336;
+}
+
+/* Translation */
+.translation-prompt {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.translation-input {
+    width: 100%;
+    padding: 0.85rem;
+    border: 2px solid #e8e0e4;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    min-height: 60px;
+}
+
+.translation-input:focus {
+    border-color: #d4739d;
+}
+
+/* Buttons */
+.primary-btn {
+    display: block;
+    width: 100%;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #e8a0bf, #d4739d);
+    color: white;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 0.75rem;
+    transition: opacity 0.2s;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+/* Feedback */
+#exercise-feedback {
+    padding: 0.85rem;
+    border-radius: 10px;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+#exercise-feedback.correct {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+#exercise-feedback.wrong {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+/* Results */
+#results-content {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.results-score {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #d4739d;
+}
+
+.results-text {
+    font-size: 1.1rem;
+    margin: 0.75rem 0;
+    color: #555;
+}
+
+.results-detail {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.results-detail .item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0e0ea;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 400px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+}

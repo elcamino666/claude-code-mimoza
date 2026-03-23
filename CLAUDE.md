@@ -45,4 +45,4 @@ When you start a new session and the Telegram channel is available, immediately 
 
 ## On Self-Restart
 
-Before executing `launchctl kickstart -k gui/501/com.claude.mimoza`, always send a Telegram message to Eni (chat_id: 2042522190) saying "Mimoza restarting now..." This must happen before the launchctl call since the process will be killed immediately after.
+If you need to restart, send a Telegram message to Eni (chat_id: 2042522190) saying "Mimoza restarting now..." and then exit. The watchdog will automatically restart the container.

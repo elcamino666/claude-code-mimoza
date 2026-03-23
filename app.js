@@ -20,16 +20,16 @@ function loadExercise(type) {
     if (type === 'vocabulary') {
         document.getElementById('exercise-title').textContent = 'Fjalor';
         showVocabulary();
-    } else if (type === 'multiplechoice') {
-        document.getElementById('exercise-title').textContent = 'Zgjedh Përgjigjen';
+    } else if (type === 'multiplechoice' || type === 'b1_grammar') {
+        document.getElementById('exercise-title').textContent = type === 'b1_grammar' ? 'B1 Gramatikë' : 'Zgjedh Përgjigjen';
         shuffleArray(currentQuestions);
         showMultipleChoice();
-    } else if (type === 'fillin') {
-        document.getElementById('exercise-title').textContent = 'Plotëso Fjalën';
+    } else if (type === 'fillin' || type === 'b1_fillin') {
+        document.getElementById('exercise-title').textContent = type === 'b1_fillin' ? 'B1 Plotëso Fjalën' : 'Plotëso Fjalën';
         shuffleArray(currentQuestions);
         showFillIn();
-    } else if (type === 'translation') {
-        document.getElementById('exercise-title').textContent = 'Përkthe';
+    } else if (type === 'translation' || type === 'b1_translation') {
+        document.getElementById('exercise-title').textContent = type === 'b1_translation' ? 'B1 Përkthe' : 'Përkthe';
         shuffleArray(currentQuestions);
         showTranslation();
     }

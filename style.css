@@ -366,6 +366,17 @@ footer {
     font-size: 0.85rem;
 }
 
+/* B1 menu buttons */
+.menu-btn.b1 {
+    border-color: #ab47bc;
+    background: #f3e5f5;
+}
+
+.menu-btn.b1:hover, .menu-btn.b1:active {
+    border-color: #8e24aa;
+    background: #e1bee7;
+}
+
 /* Assessment level badges */
 .level-badge {
     display: inline-block;

@@ -1,10 +1,11 @@
-const CACHE_NAME = 'mimoza-v3';
+const CACHE_NAME = 'mimoza-v4';
 const ASSETS = [
     './',
     './index.html',
     './style.css',
     './app.js',
     './exercises.js',
+    './b1-exercises.js',
     './assessment.js',
     './manifest.json'
 ];

@@ -2,8 +2,14 @@
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Mimoza — Mëso Gjermanisht</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mimoza">
+    <meta name="theme-color" content="#d4739d">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,6 +47,16 @@
                     <span>Përkthe</span>
                     <small>Shqip → Gjermanisht</small>
                 </button>
+                <button class="menu-btn highlight" onclick="startAssessment()">
+                    <span class="icon">🎯</span>
+                    <span>Test Vlerësimi</span>
+                    <small>Zbulo nivelin tënd</small>
+                </button>
+                <button class="menu-btn" onclick="showHistory()">
+                    <span class="icon">📊</span>
+                    <span>Historiku</span>
+                    <small>Shiko rezultatet</small>
+                </button>
             </div>
         </nav>
 
@@ -63,6 +79,14 @@
             <div id="results-content"></div>
             <button class="primary-btn" onclick="goBack()">Kthehu te Ushtrimet</button>
         </section>
+
+        <section id="history-section" class="card hidden">
+            <div id="exercise-header">
+                <button class="back-btn" onclick="goBack()">← Kthehu</button>
+                <h2>Historiku i Ushtrimeve</h2>
+            </div>
+            <div id="history-content"></div>
+        </section>
     </main>
 
     <footer>
@@ -70,6 +94,12 @@
     </footer>
 
     <script src="exercises.js"></script>
+    <script src="assessment.js"></script>
     <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
+        }
+    </script>
 </body>
 </html>

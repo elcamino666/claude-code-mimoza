@@ -4,17 +4,17 @@ let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
+let userAnswers = []; // Track all answers for review
 
 function loadExercise(type) {
     currentExercise = type;
     currentIndex = 0;
     score = 0;
     answered = false;
+    userAnswers = [];
     currentQuestions = [...EXERCISES[type]];
 
-    document.getElementById('exercise-menu').classList.add('hidden');
-    document.getElementById('welcome').classList.add('hidden');
-    document.getElementById('results').classList.add('hidden');
+    hideAll();
     document.getElementById('exercise-area').classList.remove('hidden');
 
     if (type === 'vocabulary') {
@@ -37,15 +37,22 @@ function loadExercise(type) {
     updateScore();
 }
 
-function goBack() {
-    document.getElementById('exercise-area').classList.add('hidden');
+function hideAll() {
+    document.getElementById('exercise-menu').classList.add('hidden');
+    document.getElementById('welcome').classList.add('hidden');
     document.getElementById('results').classList.add('hidden');
+    document.getElementById('exercise-area').classList.add('hidden');
+    document.getElementById('history-section').classList.add('hidden');
+}
+
+function goBack() {
+    hideAll();
     document.getElementById('exercise-menu').classList.remove('hidden');
     document.getElementById('welcome').classList.remove('hidden');
 }
 
 function updateScore() {
-    const display = document.getElementById('score-display');
+    var display = document.getElementById('score-display');
     if (currentExercise === 'vocabulary') {
         display.textContent = (currentIndex + 1) + ' / ' + currentQuestions.length;
     } else {
@@ -55,8 +62,8 @@ function updateScore() {
 
 // --- Vocabulary ---
 function showVocabulary() {
-    const content = document.getElementById('exercise-content');
-    const item = currentQuestions[currentIndex];
+    var content = document.getElementById('exercise-content');
+    var item = currentQuestions[currentIndex];
 
     content.innerHTML =
         '<div class="vocab-card">' +
@@ -69,10 +76,11 @@ function showVocabulary() {
     document.getElementById('check-btn').classList.add('hidden');
     document.getElementById('exercise-feedback').classList.add('hidden');
 
-    const nextBtn = document.getElementById('next-btn');
+    var nextBtn = document.getElementById('next-btn');
     if (currentIndex < currentQuestions.length - 1) {
         nextBtn.classList.remove('hidden');
         nextBtn.textContent = 'Vazhdo →';
+        nextBtn.onclick = nextQuestion;
     } else {
         nextBtn.classList.remove('hidden');
         nextBtn.textContent = '← Kthehu te Ushtrimet';
@@ -85,10 +93,10 @@ function showVocabulary() {
 // --- Multiple Choice ---
 function showMultipleChoice() {
     answered = false;
-    const content = document.getElementById('exercise-content');
-    const item = currentQuestions[currentIndex];
+    var content = document.getElementById('exercise-content');
+    var item = currentQuestions[currentIndex];
 
-    let optionsHtml = '<div class="mc-options">';
+    var optionsHtml = '<div class="mc-options">';
     item.options.forEach(function(opt, i) {
         optionsHtml += '<button class="mc-option" data-index="' + i + '" onclick="selectOption(this, ' + i + ')">' + opt + '</button>';
     });
@@ -116,16 +124,17 @@ function selectOption(btn, index) {
 
 function checkMultipleChoice() {
     if (answered) return;
-    const selected = document.querySelector('.mc-option.selected');
+    var selected = document.querySelector('.mc-option.selected');
     if (!selected) return;
 
     answered = true;
-    const item = currentQuestions[currentIndex];
-    const selectedIndex = parseInt(selected.dataset.index);
-    const feedback = document.getElementById('exercise-feedback');
+    var item = currentQuestions[currentIndex];
+    var selectedIndex = parseInt(selected.dataset.index);
+    var feedback = document.getElementById('exercise-feedback');
+    var isCorrect = selectedIndex === item.correct;
 
     document.querySelectorAll('.mc-option').forEach(function(btn) {
-        const idx = parseInt(btn.dataset.index);
+        var idx = parseInt(btn.dataset.index);
         if (idx === item.correct) {
             btn.classList.add('correct');
         } else if (idx === selectedIndex) {
@@ -134,7 +143,7 @@ function checkMultipleChoice() {
         btn.style.pointerEvents = 'none';
     });
 
-    if (selectedIndex === item.correct) {
+    if (isCorrect) {
         score++;
         feedback.className = 'correct';
         feedback.textContent = '✓ Saktë! Shumë mirë! 👏';
@@ -144,6 +153,14 @@ function checkMultipleChoice() {
     }
     feedback.classList.remove('hidden');
 
+    // Save answer
+    userAnswers.push({
+        question: item.question,
+        userAnswer: item.options[selectedIndex],
+        correctAnswer: item.options[item.correct],
+        isCorrect: isCorrect
+    });
+
     document.getElementById('check-btn').classList.add('hidden');
     showNextButton();
     updateScore();
@@ -152,10 +169,10 @@ function checkMultipleChoice() {
 // --- Fill in the blank ---
 function showFillIn() {
     answered = false;
-    const content = document.getElementById('exercise-content');
-    const item = currentQuestions[currentIndex];
+    var content = document.getElementById('exercise-content');
+    var item = currentQuestions[currentIndex];
 
-    const parts = item.sentence.split('___');
+    var parts = item.sentence.split('___');
     content.innerHTML =
         '<div class="fillin-sentence">' +
             parts[0] +
@@ -178,14 +195,14 @@ function showFillIn() {
 
 function checkFillIn() {
     if (answered) return;
-    const input = document.getElementById('fillin-answer');
-    const userAnswer = input.value.trim();
+    var input = document.getElementById('fillin-answer');
+    var userAnswer = input.value.trim();
     if (!userAnswer) return;
 
     answered = true;
-    const item = currentQuestions[currentIndex];
-    const feedback = document.getElementById('exercise-feedback');
-    const isCorrect = userAnswer.toLowerCase() === item.answer.toLowerCase();
+    var item = currentQuestions[currentIndex];
+    var feedback = document.getElementById('exercise-feedback');
+    var isCorrect = userAnswer.toLowerCase() === item.answer.toLowerCase();
 
     input.disabled = true;
     if (isCorrect) {
@@ -200,6 +217,14 @@ function checkFillIn() {
     }
     feedback.classList.remove('hidden');
 
+    // Save answer
+    userAnswers.push({
+        question: item.sentence,
+        userAnswer: userAnswer,
+        correctAnswer: item.answer,
+        isCorrect: isCorrect
+    });
+
     document.getElementById('check-btn').classList.add('hidden');
     showNextButton();
     updateScore();
@@ -208,8 +233,8 @@ function checkFillIn() {
 // --- Translation ---
 function showTranslation() {
     answered = false;
-    const content = document.getElementById('exercise-content');
-    const item = currentQuestions[currentIndex];
+    var content = document.getElementById('exercise-content');
+    var item = currentQuestions[currentIndex];
 
     content.innerHTML =
         '<div class="translation-prompt">Përkthe në gjermanisht:</div>' +
@@ -226,14 +251,14 @@ function showTranslation() {
 
 function checkTranslation() {
     if (answered) return;
-    const input = document.getElementById('translation-answer');
-    const userAnswer = input.value.trim();
+    var input = document.getElementById('translation-answer');
+    var userAnswer = input.value.trim();
     if (!userAnswer) return;
 
     answered = true;
-    const item = currentQuestions[currentIndex];
-    const feedback = document.getElementById('exercise-feedback');
-    const isCorrect = item.acceptedAnswers.some(function(a) {
+    var item = currentQuestions[currentIndex];
+    var feedback = document.getElementById('exercise-feedback');
+    var isCorrect = item.acceptedAnswers.some(function(a) {
         return userAnswer.toLowerCase() === a.toLowerCase();
     });
 
@@ -250,14 +275,167 @@ function checkTranslation() {
     }
     feedback.classList.remove('hidden');
 
+    // Save answer
+    userAnswers.push({
+        question: item.albanian,
+        userAnswer: userAnswer,
+        correctAnswer: item.answer,
+        isCorrect: isCorrect
+    });
+
     document.getElementById('check-btn').classList.add('hidden');
     showNextButton();
     updateScore();
 }
 
+// --- Assessment Test ---
+function startAssessment() {
+    currentExercise = 'assessment';
+    currentIndex = 0;
+    score = 0;
+    answered = false;
+    userAnswers = [];
+    currentQuestions = [...ASSESSMENT.questions];
+
+    hideAll();
+    document.getElementById('exercise-area').classList.remove('hidden');
+    document.getElementById('exercise-title').textContent = 'Test Vlerësimi';
+
+    showAssessmentQuestion();
+}
+
+function showAssessmentQuestion() {
+    answered = false;
+    var content = document.getElementById('exercise-content');
+    var item = currentQuestions[currentIndex];
+
+    var levelBadge = '<span class="level-badge level-' + item.level.toLowerCase() + '">' + item.level + '</span>';
+
+    var optionsHtml = '<div class="mc-options">';
+    item.options.forEach(function(opt, i) {
+        optionsHtml += '<button class="mc-option" data-index="' + i + '" onclick="selectOption(this, ' + i + ')">' + opt + '</button>';
+    });
+    optionsHtml += '</div>';
+
+    content.innerHTML =
+        levelBadge +
+        '<div class="mc-question">' + item.question + '</div>' +
+        optionsHtml;
+
+    document.getElementById('check-btn').classList.remove('hidden');
+    document.getElementById('next-btn').classList.add('hidden');
+    document.getElementById('exercise-feedback').classList.add('hidden');
+    document.getElementById('check-btn').onclick = checkAssessment;
+
+    document.getElementById('score-display').textContent = (currentIndex + 1) + ' / ' + currentQuestions.length;
+}
+
+function checkAssessment() {
+    if (answered) return;
+    var selected = document.querySelector('.mc-option.selected');
+    if (!selected) return;
+
+    answered = true;
+    var item = currentQuestions[currentIndex];
+    var selectedIndex = parseInt(selected.dataset.index);
+    var feedback = document.getElementById('exercise-feedback');
+    var isCorrect = selectedIndex === item.correct;
+
+    document.querySelectorAll('.mc-option').forEach(function(btn) {
+        var idx = parseInt(btn.dataset.index);
+        if (idx === item.correct) {
+            btn.classList.add('correct');
+        } else if (idx === selectedIndex) {
+            btn.classList.add('wrong');
+        }
+        btn.style.pointerEvents = 'none';
+    });
+
+    if (isCorrect) {
+        score++;
+        feedback.className = 'correct';
+        feedback.textContent = '✓ Saktë!';
+    } else {
+        feedback.className = 'wrong';
+        feedback.textContent = '✗ Përgjigja e saktë: ' + item.options[item.correct];
+    }
+    feedback.classList.remove('hidden');
+
+    userAnswers.push({
+        level: item.level,
+        question: item.question,
+        userAnswer: item.options[selectedIndex],
+        correctAnswer: item.options[item.correct],
+        isCorrect: isCorrect
+    });
+
+    document.getElementById('check-btn').classList.add('hidden');
+
+    var nextBtn = document.getElementById('next-btn');
+    nextBtn.classList.remove('hidden');
+    if (currentIndex < currentQuestions.length - 1) {
+        nextBtn.textContent = 'Vazhdo →';
+        nextBtn.onclick = function() {
+            currentIndex++;
+            showAssessmentQuestion();
+        };
+    } else {
+        nextBtn.textContent = 'Shiko Rezultatin →';
+        nextBtn.onclick = showAssessmentResults;
+    }
+}
+
+function showAssessmentResults() {
+    hideAll();
+    document.getElementById('results').classList.remove('hidden');
+
+    // Calculate per-level scores
+    var levels = { A1: { correct: 0, total: 0 }, A2: { correct: 0, total: 0 }, B1: { correct: 0, total: 0 } };
+    userAnswers.forEach(function(a) {
+        levels[a.level].total++;
+        if (a.isCorrect) levels[a.level].correct++;
+    });
+
+    var a1pct = Math.round((levels.A1.correct / levels.A1.total) * 100);
+    var a2pct = Math.round((levels.A2.correct / levels.A2.total) * 100);
+    var b1pct = Math.round((levels.B1.correct / levels.B1.total) * 100);
+
+    // Determine level
+    var determinedLevel = 'A0';
+    if (a1pct >= 60) determinedLevel = 'A1';
+    if (a1pct >= 60 && a2pct >= 60) determinedLevel = 'A2';
+    if (a1pct >= 60 && a2pct >= 60 && b1pct >= 60) determinedLevel = 'B1';
+
+    var levelMessages = {
+        'A0': 'Fillestar — do të fillojmë nga baza! Çdo udhëtim fillon me hapin e parë. 🌱',
+        'A1': 'Niveli A1 — ke bazat! Tani punojmë për A2. 📗',
+        'A2': 'Niveli A2 — shumë mirë! Je në rrugë të mirë drejt B1. 📘',
+        'B1': 'Niveli B1 — shkëlqyeshëm! Ke arritur objektivin! 🏆'
+    };
+
+    document.getElementById('results-content').innerHTML =
+        '<div class="results-score">' + determinedLevel + '</div>' +
+        '<div class="results-text">' + levelMessages[determinedLevel] + '</div>' +
+        '<div class="level-bars">' +
+            '<div class="level-bar"><span>A1</span><div class="bar"><div class="bar-fill" style="width:' + a1pct + '%"></div></div><span>' + a1pct + '%</span></div>' +
+            '<div class="level-bar"><span>A2</span><div class="bar"><div class="bar-fill" style="width:' + a2pct + '%"></div></div><span>' + a2pct + '%</span></div>' +
+            '<div class="level-bar"><span>B1</span><div class="bar"><div class="bar-fill" style="width:' + b1pct + '%"></div></div><span>' + b1pct + '%</span></div>' +
+        '</div>' +
+        '<button class="share-btn" onclick="shareResults()">📤 Dërgo rezultatin te Mimoza</button>';
+
+    // Save to history
+    saveToHistory({
+        type: 'assessment',
+        date: new Date().toISOString(),
+        level: determinedLevel,
+        scores: { A1: a1pct, A2: a2pct, B1: b1pct },
+        answers: userAnswers
+    });
+}
+
 // --- Shared ---
 function showNextButton() {
-    const nextBtn = document.getElementById('next-btn');
+    var nextBtn = document.getElementById('next-btn');
     nextBtn.classList.remove('hidden');
     if (currentIndex < currentQuestions.length - 1) {
         nextBtn.textContent = 'Vazhdo →';
@@ -277,28 +455,164 @@ function nextQuestion() {
 }
 
 function showResults() {
-    document.getElementById('exercise-area').classList.add('hidden');
+    hideAll();
     document.getElementById('results').classList.remove('hidden');
 
-    const total = currentQuestions.length;
-    const percent = Math.round((score / total) * 100);
-    let message = '';
+    var total = currentQuestions.length;
+    var percent = Math.round((score / total) * 100);
+    var message = '';
     if (percent === 100) message = 'Perfekt! Shkëlqyeshëm! 🌟';
     else if (percent >= 80) message = 'Shumë mirë! Vazhdo kështu! 💪';
     else if (percent >= 60) message = 'Mirë! Mund të bësh edhe më mirë! 😊';
     else if (percent >= 40) message = 'Jo keq! Provo përsëri për rezultat më të mirë. 📚';
     else message = 'Vazhdo të mësosh! Çdo hap ka rëndësi. 🌸';
 
+    var typeNames = {
+        multiplechoice: 'Zgjedh Përgjigjen',
+        fillin: 'Plotëso Fjalën',
+        translation: 'Përkthe'
+    };
+
     document.getElementById('results-content').innerHTML =
         '<div class="results-score">' + percent + '%</div>' +
         '<div class="results-text">' + score + ' nga ' + total + ' përgjigje të sakta</div>' +
-        '<div class="results-text">' + message + '</div>';
+        '<div class="results-text">' + message + '</div>' +
+        '<button class="share-btn" onclick="shareResults()">📤 Dërgo rezultatin te Mimoza</button>';
+
+    // Save to history
+    saveToHistory({
+        type: currentExercise,
+        typeName: typeNames[currentExercise] || currentExercise,
+        date: new Date().toISOString(),
+        score: score,
+        total: total,
+        percent: percent,
+        answers: userAnswers
+    });
+}
+
+// --- History & Sharing ---
+function saveToHistory(result) {
+    var history = JSON.parse(localStorage.getItem('mimoza_history') || '[]');
+    history.unshift(result);
+    if (history.length > 50) history = history.slice(0, 50);
+    localStorage.setItem('mimoza_history', JSON.stringify(history));
+}
+
+function showHistory() {
+    hideAll();
+    document.getElementById('history-section').classList.remove('hidden');
+
+    var history = JSON.parse(localStorage.getItem('mimoza_history') || '[]');
+    var content = document.getElementById('history-content');
+
+    if (history.length === 0) {
+        content.innerHTML = '<p style="text-align:center; color:#888; padding:2rem 0;">Nuk ke bërë asnjë ushtrim ende.</p>';
+        return;
+    }
+
+    var html = '';
+    history.forEach(function(item, idx) {
+        var date = new Date(item.date);
+        var dateStr = date.toLocaleDateString('sq-AL') + ' ' + date.toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit' });
+
+        if (item.type === 'assessment') {
+            html += '<div class="history-item">' +
+                '<div class="history-header">' +
+                    '<strong>🎯 Test Vlerësimi</strong>' +
+                    '<span class="history-date">' + dateStr + '</span>' +
+                '</div>' +
+                '<div>Niveli: <strong>' + item.level + '</strong> — A1: ' + item.scores.A1 + '%, A2: ' + item.scores.A2 + '%, B1: ' + item.scores.B1 + '%</div>' +
+                '<button class="share-btn small" onclick="shareHistoryItem(' + idx + ')">📤 Dërgo te Mimoza</button>' +
+            '</div>';
+        } else {
+            html += '<div class="history-item">' +
+                '<div class="history-header">' +
+                    '<strong>' + (item.typeName || item.type) + '</strong>' +
+                    '<span class="history-date">' + dateStr + '</span>' +
+                '</div>' +
+                '<div>' + item.score + '/' + item.total + ' (' + item.percent + '%)</div>' +
+                '<button class="share-btn small" onclick="shareHistoryItem(' + idx + ')">📤 Dërgo te Mimoza</button>' +
+            '</div>';
+        }
+    });
+
+    content.innerHTML = html;
+}
+
+function shareResults() {
+    var history = JSON.parse(localStorage.getItem('mimoza_history') || '[]');
+    if (history.length > 0) {
+        shareHistoryItem(0);
+    }
+}
+
+function shareHistoryItem(idx) {
+    var history = JSON.parse(localStorage.getItem('mimoza_history') || '[]');
+    var item = history[idx];
+    if (!item) return;
+
+    var text = '📊 Mimoza — Rezultati\n';
+    var date = new Date(item.date);
+    text += '📅 ' + date.toLocaleDateString('sq-AL') + '\n\n';
+
+    if (item.type === 'assessment') {
+        text += '🎯 Test Vlerësimi\n';
+        text += 'Niveli: ' + item.level + '\n';
+        text += 'A1: ' + item.scores.A1 + '% | A2: ' + item.scores.A2 + '% | B1: ' + item.scores.B1 + '%\n\n';
+    } else {
+        text += '📝 ' + (item.typeName || item.type) + '\n';
+        text += 'Rezultati: ' + item.score + '/' + item.total + ' (' + item.percent + '%)\n\n';
+    }
+
+    // Detail answers
+    if (item.answers && item.answers.length > 0) {
+        text += 'Detaje:\n';
+        item.answers.forEach(function(a, i) {
+            var mark = a.isCorrect ? '✓' : '✗';
+            text += mark + ' ' + a.question + '\n';
+            if (!a.isCorrect) {
+                text += '  Përgjigja jote: ' + a.userAnswer + '\n';
+                text += '  E saktë: ' + a.correctAnswer + '\n';
+            }
+        });
+    }
+
+    // Try native share, fallback to clipboard
+    if (navigator.share) {
+        navigator.share({ text: text }).catch(function() {
+            copyToClipboard(text);
+        });
+    } else {
+        copyToClipboard(text);
+    }
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        showToast('📋 U kopjua! Dërgo tekstin te Mimoza në Telegram.');
+    }).catch(function() {
+        // Fallback: show in a prompt
+        prompt('Kopjo këtë tekst dhe dërgo te Mimoza:', text);
+    });
+}
+
+function showToast(message) {
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.classList.add('show'); }, 10);
+    setTimeout(function() {
+        toast.classList.remove('show');
+        setTimeout(function() { toast.remove(); }, 300);
+    }, 3000);
 }
 
 function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = arr[i];
+    for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }

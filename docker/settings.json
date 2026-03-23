@@ -2,5 +2,6 @@
   "enabledPlugins": {
     "telegram@claude-plugins-official": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "apiKeyHelper": "echo $ANTHROPIC_API_KEY"
 }

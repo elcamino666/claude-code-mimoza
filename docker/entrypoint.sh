@@ -1,13 +1,23 @@
 #!/bin/bash
 
 # Telegram env vars are passed via docker run -e in the launcher
-# TELEGRAM_BOT_TOKEN and TELEGRAM_STATE_DIR are set there
-export TELEGRAM_STATE_DIR="/root/.claude/channels/telegram"
+export TELEGRAM_STATE_DIR="/home/mimoza/.claude/channels/telegram"
 
-# Launch Claude Code with startup prompt as the initial message.
-# Claude Code accepts a prompt as a positional argument.
+# Create a FIFO for stdin — keeps Claude alive in interactive mode
+mkfifo /tmp/claude-stdin 2>/dev/null || true
+
+# Send startup prompt after 25s delay
+(
+    sleep 25
+    echo "You just started. Follow the On Startup instructions in CLAUDE.md now." > /tmp/claude-stdin
+    # Keep writer open so the pipe doesn't close (keeps Claude alive)
+    sleep infinity
+) &
+
+# Launch Claude Code with apiKeyHelper in settings for auth (no --bare)
+# The settings.json has apiKeyHelper that reads ANTHROPIC_API_KEY env var
 exec claude \
     --dangerously-skip-permissions \
     --channels plugin:telegram@claude-plugins-official \
     --model opus \
-    -p "You just started. Follow the On Startup instructions in CLAUDE.md now."
+    < /tmp/claude-stdin

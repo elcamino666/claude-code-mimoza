@@ -621,3 +621,16 @@ function shuffleArray(arr) {
 function checkAnswer() {
     // Delegated to specific check functions
 }
+
+function refreshApp() {
+    // Clear service worker cache and reload
+    if ('caches' in window) {
+        caches.keys().then(function(names) {
+            names.forEach(function(name) { caches.delete(name); });
+        }).then(function() {
+            window.location.reload(true);
+        });
+    } else {
+        window.location.reload(true);
+    }
+}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mimoza-v1';
+const CACHE_NAME = 'mimoza-v2';
 const ASSETS = [
     './',
     './index.html',

@@ -11,6 +11,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-size: 18px;
 }
 
 header {
@@ -21,12 +22,12 @@ header {
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 0.25rem;
 }
 
 .subtitle {
-    font-size: 1rem;
+    font-size: 1.2rem;
     opacity: 0.9;
 }
 
@@ -49,7 +50,7 @@ main {
 .card h2 {
     color: #d4739d;
     margin-bottom: 0.75rem;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 .hidden {
@@ -89,12 +90,12 @@ main {
 
 .menu-btn span {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     color: #2d2d2d;
 }
 
 .menu-btn small {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     color: #888;
 }
 
@@ -139,20 +140,20 @@ main {
 }
 
 .vocab-card .german {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #2d2d2d;
 }
 
 .vocab-card .pronunciation {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: #888;
     font-style: italic;
     margin: 0.25rem 0;
 }
 
 .vocab-card .albanian {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: #555;
 }
 
@@ -160,16 +161,16 @@ main {
     margin-top: 0.5rem;
     padding-top: 0.5rem;
     border-top: 1px solid #e8e0e4;
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     color: #777;
 }
 
 /* Multiple choice */
 .mc-question {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 .mc-options {
@@ -181,12 +182,12 @@ main {
 .mc-option {
     display: block;
     width: 100%;
-    padding: 0.85rem 1rem;
+    padding: 1rem 1.1rem;
     border: 2px solid #e8e0e4;
     border-radius: 10px;
     background: #fdf6f0;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-family: inherit;
     text-align: left;
     transition: all 0.2s;
@@ -213,7 +214,7 @@ main {
 
 /* Fill in the blank */
 .fillin-sentence {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     line-height: 1.6;
     margin-bottom: 1rem;
 }
@@ -223,7 +224,7 @@ main {
     border: none;
     border-bottom: 2px solid #d4739d;
     background: transparent;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-family: inherit;
     padding: 0.15rem 0.5rem;
     width: 150px;
@@ -247,7 +248,7 @@ main {
 
 /* Translation */
 .translation-prompt {
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
 }
@@ -257,7 +258,7 @@ main {
     padding: 0.85rem;
     border: 2px solid #e8e0e4;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: inherit;
     resize: none;
     outline: none;
@@ -272,12 +273,12 @@ main {
 .primary-btn {
     display: block;
     width: 100%;
-    padding: 0.85rem;
+    padding: 1rem;
     border: none;
     border-radius: 10px;
     background: linear-gradient(135deg, #e8a0bf, #d4739d);
     color: white;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
     font-family: inherit;
@@ -294,7 +295,7 @@ main {
     padding: 0.85rem;
     border-radius: 10px;
     margin-top: 0.75rem;
-    font-size: 1rem;
+    font-size: 1.15rem;
     line-height: 1.4;
 }
 

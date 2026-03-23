@@ -377,6 +377,17 @@ footer {
     background: #e1bee7;
 }
 
+/* B2 menu buttons */
+.menu-btn.b2 {
+    border-color: #1565c0;
+    background: #e3f2fd;
+}
+
+.menu-btn.b2:hover, .menu-btn.b2:active {
+    border-color: #0d47a1;
+    background: #bbdefb;
+}
+
 /* Assessment level badges */
 .level-badge {
     display: inline-block;

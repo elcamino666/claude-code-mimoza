@@ -20,16 +20,16 @@ function loadExercise(type) {
     if (type === 'vocabulary') {
         document.getElementById('exercise-title').textContent = 'Fjalor';
         showVocabulary();
-    } else if (type === 'multiplechoice' || type === 'b1_grammar') {
-        document.getElementById('exercise-title').textContent = type === 'b1_grammar' ? 'B1 Gramatikë' : 'Zgjedh Përgjigjen';
+    } else if (type === 'multiplechoice' || type === 'b1_grammar' || type === 'b2_grammar') {
+        document.getElementById('exercise-title').textContent = type === 'b2_grammar' ? 'B2 Gramatikë' : type === 'b1_grammar' ? 'B1 Gramatikë' : 'Zgjedh Përgjigjen';
         shuffleArray(currentQuestions);
         showMultipleChoice();
-    } else if (type === 'fillin' || type === 'b1_fillin') {
-        document.getElementById('exercise-title').textContent = type === 'b1_fillin' ? 'B1 Plotëso Fjalën' : 'Plotëso Fjalën';
+    } else if (type === 'fillin' || type === 'b1_fillin' || type === 'b2_fillin') {
+        document.getElementById('exercise-title').textContent = type === 'b2_fillin' ? 'B2 Plotëso Fjalën' : type === 'b1_fillin' ? 'B1 Plotëso Fjalën' : 'Plotëso Fjalën';
         shuffleArray(currentQuestions);
         showFillIn();
-    } else if (type === 'translation' || type === 'b1_translation') {
-        document.getElementById('exercise-title').textContent = type === 'b1_translation' ? 'B1 Përkthe' : 'Përkthe';
+    } else if (type === 'translation' || type === 'b1_translation' || type === 'b2_translation') {
+        document.getElementById('exercise-title').textContent = type === 'b2_translation' ? 'B2 Përkthe' : type === 'b1_translation' ? 'B1 Përkthe' : 'Përkthe';
         shuffleArray(currentQuestions);
         showTranslation();
     }

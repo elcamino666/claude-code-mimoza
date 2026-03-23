@@ -622,6 +622,34 @@ function checkAnswer() {
     // Delegated to specific check functions
 }
 
+// --- Settings ---
+function openSettings() {
+    document.getElementById('settings-modal').classList.remove('hidden');
+    var currentSize = parseInt(localStorage.getItem('mimoza_fontsize') || '22');
+    document.getElementById('font-size-display').textContent = currentSize;
+}
+
+function closeSettings() {
+    document.getElementById('settings-modal').classList.add('hidden');
+}
+
+function changeFontSize(delta) {
+    var currentSize = parseInt(localStorage.getItem('mimoza_fontsize') || '22');
+    var newSize = Math.max(16, Math.min(36, currentSize + delta));
+    localStorage.setItem('mimoza_fontsize', newSize);
+    document.getElementById('font-size-display').textContent = newSize;
+    document.body.style.fontSize = newSize + 'px';
+    document.getElementById('font-preview').style.fontSize = newSize + 'px';
+}
+
+// Apply saved font size on load
+(function() {
+    var savedSize = localStorage.getItem('mimoza_fontsize');
+    if (savedSize) {
+        document.body.style.fontSize = savedSize + 'px';
+    }
+})();
+
 function refreshApp() {
     // Clear service worker cache and reload
     if ('caches' in window) {

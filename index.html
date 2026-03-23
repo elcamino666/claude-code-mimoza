@@ -58,6 +58,11 @@
                     <span>Historiku</span>
                     <small>Shiko rezultatet</small>
                 </button>
+                <button class="menu-btn" onclick="openSettings()">
+                    <span class="icon">⚙️</span>
+                    <span>Cilësimet</span>
+                    <small>Madhësia e shkronjave</small>
+                </button>
             </div>
         </nav>
 
@@ -89,6 +94,23 @@
             <div id="history-content"></div>
         </section>
     </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>⚙️ Cilësimet</h2>
+            <div class="setting-item">
+                <label>Madhësia e shkronjave:</label>
+                <div class="font-size-controls">
+                    <button class="size-btn" onclick="changeFontSize(-2)">A-</button>
+                    <span id="font-size-display">22</span>
+                    <button class="size-btn" onclick="changeFontSize(2)">A+</button>
+                </div>
+            </div>
+            <p id="font-preview" style="margin: 1rem 0;">Kjo është një shembull teksti.</p>
+            <button class="primary-btn" onclick="closeSettings()">Ruaj & Mbyll</button>
+        </div>
+    </div>
 
     <footer>
         <p>Mimoza — Asistentja jote për gjermanishten 🌸</p>

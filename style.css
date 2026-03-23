@@ -487,6 +487,78 @@ footer {
     transform: translateX(-50%) translateY(0);
 }
 
+/* Settings Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.modal-content h2 {
+    color: #d4739d;
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+}
+
+.setting-item {
+    margin-bottom: 1rem;
+}
+
+.setting-item label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.font-size-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.size-btn {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #d4739d;
+    border-radius: 12px;
+    background: #fdf6f0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #d4739d;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.size-btn:active {
+    background: #fce8f1;
+}
+
+#font-size-display {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d4739d;
+    min-width: 50px;
+    text-align: center;
+}
+
 @media (max-width: 400px) {
     .menu-grid {
         grid-template-columns: 1fr;

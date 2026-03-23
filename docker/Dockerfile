@@ -51,6 +51,14 @@ COPY --chown=mimoza:mimoza docker/settings.json /home/mimoza/.claude/settings.js
 # Create channels directory (will be mounted from host)
 RUN mkdir -p /home/mimoza/.claude/channels/telegram
 
+# Create .claude.json to skip onboarding
+RUN echo '{"hasCompletedOnboarding":true,"lastOnboardingVersion":"2.1.81","numStartups":100,"installMethod":"npm","projects":{"/app/workspace":{"allowedTools":[],"hasTrustDialogAccepted":true}}}' > /home/mimoza/.claude.json
+
+# Pre-accept the workspace trust by creating the project config with trust marker
+RUN mkdir -p /home/mimoza/.claude/projects/-app-workspace && \
+    echo '{"hasTrustedWorkspace":true}' > /home/mimoza/.claude/projects/-app-workspace/settings.json && \
+    echo '{"hasTrusted":true}' > /home/mimoza/.claude/projects/-app-workspace/.trust
+
 # Copy entrypoint
 USER root
 COPY docker/entrypoint.sh /entrypoint.sh

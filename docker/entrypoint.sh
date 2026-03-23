@@ -3,21 +3,33 @@
 # Telegram env vars are passed via docker run -e in the launcher
 export TELEGRAM_STATE_DIR="/home/mimoza/.claude/channels/telegram"
 
-# Create a FIFO for stdin — keeps Claude alive in interactive mode
-mkfifo /tmp/claude-stdin 2>/dev/null || true
+# Write inner script that runs inside the PTY
+cat > /tmp/mimoza-run.sh << 'INNEREOF'
+#!/bin/bash
+export TELEGRAM_STATE_DIR="/home/mimoza/.claude/channels/telegram"
 
-# Send startup prompt after 25s delay
+# Background: handle dialogs and send startup prompt
 (
-    sleep 25
-    echo "You just started. Follow the On Startup instructions in CLAUDE.md now." > /tmp/claude-stdin
-    # Keep writer open so the pipe doesn't close (keeps Claude alive)
-    sleep infinity
+    # Wait for "Do you want to use this API key?" dialog
+    sleep 5
+    # Send Up Arrow to select "Yes" (it defaults to "No")
+    printf '\033[A' > /dev/pts/0
+    sleep 1
+    # Send Enter to confirm
+    echo "" > /dev/pts/0
+
+    # Wait for Claude to fully start, then send startup prompt
+    sleep 30
+    echo "You just started. Follow the On Startup instructions in CLAUDE.md now." > /dev/pts/0
 ) &
 
-# Launch Claude Code with apiKeyHelper in settings for auth (no --bare)
-# The settings.json has apiKeyHelper that reads ANTHROPIC_API_KEY env var
+# Use --bare with ANTHROPIC_API_KEY, settings, and channels
 exec claude \
     --dangerously-skip-permissions \
     --channels plugin:telegram@claude-plugins-official \
-    --model opus \
-    < /tmp/claude-stdin
+    --settings /home/mimoza/.claude/settings.json \
+    --model opus
+INNEREOF
+chmod +x /tmp/mimoza-run.sh
+
+exec script -qc /tmp/mimoza-run.sh /dev/null

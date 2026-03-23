@@ -29,7 +29,7 @@ Mimoza is a Claude Code Telegram bot serving Eni's mother (72, Albanian-speaking
 
 | Volume | Host Path | Container Path | Mode |
 |--------|-----------|----------------|------|
-| Telegram state | `~/.claude/channels/telegram-mimoza/` | `/home/mimoza/.claude/channels/telegram/` | read-write |
+| Telegram state | `~/.claude/channels/telegram-mimoza/` | `/root/.claude/channels/telegram/` | read-write |
 
 ### Authentication
 
